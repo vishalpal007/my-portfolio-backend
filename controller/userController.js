@@ -4,7 +4,7 @@ const sendEmail = require("../utils/email")
 const User = require("../modals/User")
 
 exports.emailSendByUser = asyncHandler(async (req, res) => {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, company } = req.body;
 
     // Validate the fields if needed
     // ...
