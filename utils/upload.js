@@ -1,12 +1,12 @@
 const multer = require("multer")
-const { v4 } = require("uuid")
+const { v4: uuid } = require("uuid")
 const path = require("path")
 
 
 
 const storage = multer.diskStorage({
     filename: (req, file, cb) => {
-        const fileName = v4() + path.extname(file.originalname)
+        const fileName = uuid() + path.extname(file.originalname)
         cb(null, fileName)
     },
     destination: (req, file, cb) => {

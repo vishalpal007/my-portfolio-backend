@@ -1,13 +1,31 @@
 const asyncHandler = require("express-async-handler")
-const validator = require("validator")
 const sendEmail = require("../utils/email")
 const User = require("../modals/User")
+const validator = require("validator")
 
 exports.emailSendByUser = asyncHandler(async (req, res) => {
-    const { name, email, subject, message, company } = req.body;
+    const { name, email, subject, message } = req.body;
 
-    // Validate the fields if needed
-    // ...
+
+    // if (!validator.isLength(name, { min: 2, max: 50 })) {
+    //     return res.status(400).json({ error: "Name must be between 2 and 50 characters" });
+    // }
+
+    // Validate email
+    if (!validator.isEmail(email)) {
+        return res.status(400).json({ error: "Invalid email address" });
+    }
+
+    // // Validate subject
+    // if (!validator.isLength(subject, { min: 2, max: 100 })) {
+    //     return res.status(400).json({ error: "Subject must be between 2 and 100 characters" });
+    // }
+
+    // // Validate message
+    // if (!validator.isLength(message, { min: 10, max: 1000 })) {
+    //     return res.status(400).json({ error: "Message must be between 10 and 1000 characters" });
+    // }
+
 
     // Construct the HTML content with styles
     const styledServer = ` <html>
@@ -129,7 +147,16 @@ exports.emailSendByUser = asyncHandler(async (req, res) => {
     });
 
     // Optionally, you can save the user data to the database
-    // const result = await User.create(req.body);
+    const result = await User.create(req.body);
 
-    res.status(201).json({ message: "Email Send Success" });
-});
+    res.status(201).json({ message: "Email Send Success", result });
+})
+
+
+
+exports.getAllUser = asyncHandler(async (req, res) => {
+
+    const result = await User.find()
+
+    res.status(200).json({ message: "User Fetch Success", result })
+})
